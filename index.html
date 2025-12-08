@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR ABDUSALIM Quran Navigator Mockup (Fully Responsive)</title>
+    <title>MR ABDUSALIM Quran Navigator with Enhanced Recitation Player</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -14,19 +14,48 @@
                     colors: {
                         'primary': '#0b5ed7', 
                         'secondary': '#f8f9fa', 
-                        'dark-bg': '#212529', 
+                        'dark-bg': '#0f172a', 
                         'text-light': '#adb5bd', 
                         'success': '#198754',
                         'danger': '#dc3545',
                         'card-bg': '#f7f9fd',
                         'border-color': '#e9ecef',
+                        'accent': '#38bdf8',
+                        'player-bg': 'rgba(15, 23, 42, 0.9)',
                     },
                     fontFamily: {
                         sans: ['"Segoe UI"', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
-                        arabic: ['Amiri', 'serif'], 
+                        arabic: ['Amiri', 'serif'],
+                        inter: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
                     },
                     spacing: {
                         'sidebar': '320px',
+                    },
+                    animation: {
+                        'fadeInDown': 'fadeInDown 0.8s ease-out',
+                        'bounce': 'bounce 1s infinite ease-in-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'spin': 'spin 1s linear infinite',
+                        'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInDown: {
+                            'from': { opacity: '0', transform: 'translateY(-20px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        bounce: {
+                            '0%, 100%': { height: '20%', opacity: '0.5' },
+                            '50%': { height: '100%', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% center' },
+                            '100%': { backgroundPosition: '200% center' },
+                        }
                     }
                 }
             }
@@ -48,9 +77,85 @@
             font-size: 2rem;
             line-height: 2.5;
         }
+        
         .sidebar {
             max-height: 85vh;
             overflow-y: auto;
+        }
+        
+        /* Enhanced Player Styles */
+        .player-bar {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            background: rgba(51, 65, 85, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card.active {
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.1);
+        }
+        
+        .visualizer .bar {
+            width: 3px;
+            background-color: #38bdf8;
+            animation: bounce 1s infinite ease-in-out;
+            border-radius: 2px;
+        }
+        
+        .avatar {
+            background: linear-gradient(135deg, #334155, #1e293b);
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { height: 20%; opacity: 0.5; }
+            50% { height: 100%; opacity: 1; }
+        }
+        
+        /* Enhanced Auth Styles */
+        .shimmer-effect {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 40px rgba(56, 189, 248, 0.1);
+        }
+        
+        .neu-button {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+            box-shadow: 5px 5px 10px #0a0f1a, -5px -5px 10px #1e2d42;
+        }
+        
+        .neu-button:active {
+            box-shadow: inset 5px 5px 10px #0a0f1a, inset -5px -5px 10px #1e2d42;
+        }
+        
+        .border-glow {
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #38bdf8, #0b5ed7, #38bdf8) 1;
         }
     </style>
     
@@ -58,13 +163,74 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 </head>
-<body class="bg-secondary text-gray-800">
+<body class="bg-secondary text-gray-800 font-inter">
 
     <div id="auth-message" class="fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-[-20px] opacity-0"></div>
 
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity duration-300">
+        <div class="bg-gradient-to-br from-dark-bg to-gray-900 rounded-2xl p-8 max-w-md w-[90%] mx-4 transform transition-all duration-300 scale-95 opacity-0">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-primary/20 rounded-xl">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Reset Password</h3>
+                </div>
+                <button onclick="hideForgotPasswordModal()" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <p class="text-text-light mb-6">Enter your email address and we'll send you a link to reset your password.</p>
+            
+            <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)" class="space-y-4">
+                <div class="relative">
+                    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <input type="email" id="resetEmail" required placeholder="Your email address" 
+                           class="w-full pl-12 pr-4 py-3.5 bg-gray-800/50 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                </div>
+                
+                <div class="flex space-x-3 pt-2">
+                    <button type="submit" 
+                            class="flex-1 bg-gradient-to-r from-primary to-accent hover:from-blue-700 hover:to-cyan-500 text-white font-semibold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30">
+                        <span class="flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Send Reset Link</span>
+                        </span>
+                    </button>
+                    <button type="button" onclick="hideForgotPasswordModal()"
+                            class="px-6 py-3.5 border border-gray-700 text-gray-300 hover:text-white hover:border-gray-600 rounded-xl text-sm transition-all duration-300">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+            
+            <div id="forgotPasswordMessage" class="mt-4 p-3 rounded-lg hidden"></div>
+        </div>
+    </div>
+
+    <!-- Success Animation -->
+    <div id="successAnimation" class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none hidden">
+        <div class="bg-white/10 backdrop-blur-sm rounded-full p-8 animate-ping absolute"></div>
+        <div class="bg-gradient-to-r from-green-500 to-emerald-400 rounded-full p-6">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+    </div>
+
     <div class="bg-dark-bg text-white border-b border-gray-700 p-3 flex flex-wrap justify-between items-center shadow-md">
         <div class="flex items-center space-x-4 mb-2 sm:mb-0">
-            <img src="1.jpeg" width="60px" height="40px" alt="">
+            <img src="1.jpeg" width="60px" height="40px" alt="Logo">
             <a href="https://abdusalimsubahielbashi.github.io/my-Portfolio/" class="text-text-light hover:text-primary text-sm">SKIP TO CONTENT</a>
             <strong class="text-amber-400">MR ABDUSALIM</strong>
         </div>
@@ -78,11 +244,98 @@
                 <a href="https://github.com/ABDUSALIMSUBAHIELBASHI?tab=repositories" target="_blank" class="text-yellow-400 font-bold text-sm">QuranAPI</a>
             </div>
 
-            <form id="auth-controls" class="flex items-center space-x-2 mt-2 sm:mt-0" onsubmit="handleAuthSubmit(event);">
-                <input type="email" placeholder="Email" required aria-label="Email for Log In / Sign Up" class="p-1.5 border border-gray-600 rounded-md w-24 sm:w-36 text-xs sm:text-sm bg-gray-700 text-white focus:ring-primary focus:border-primary">
-                <input type="password" placeholder="Pass" required aria-label="Password" class="p-1.5 border border-gray-600 rounded-md w-20 sm:w-36 text-xs sm:text-sm bg-gray-700 text-white focus:ring-primary focus:border-primary">
-                <button type="submit" class="bg-primary hover:bg-blue-700 text-white font-semibold py-1.5 px-3 rounded-md text-xs sm:text-sm transition duration-200">Log In / Sign Up</button>
-            </form>
+            <!-- Enhanced Auth Section with Modern 2025 Design -->
+            <div class="relative">
+                <form id="auth-controls" class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mt-2 sm:mt-0" onsubmit="handleAuthSubmit(event);">
+                    <div class="relative">
+                        <div class="flex items-center">
+                            <svg class="absolute left-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <input type="email" placeholder="Email" required 
+                                   aria-label="Email for Log In / Sign Up" 
+                                   class="pl-10 pr-4 py-2.5 border border-gray-600 rounded-xl w-full sm:w-40 text-sm bg-gray-800/50 backdrop-blur-sm text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:bg-gray-800/70">
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <div class="flex items-center">
+                            <svg class="absolute left-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                            <input type="password" id="passwordInput" placeholder="Password" required 
+                                   aria-label="Password" 
+                                   class="pl-10 pr-10 py-2.5 border border-gray-600 rounded-xl w-full sm:w-40 text-sm bg-gray-800/50 backdrop-blur-sm text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:bg-gray-800/70">
+                            
+                            <!-- Show/Hide Password Icon -->
+                            <button type="button" onclick="togglePasswordVisibility()" 
+                                    class="absolute right-3 text-gray-400 hover:text-primary transition-colors duration-200"
+                                    aria-label="Toggle password visibility">
+                                <svg id="showPasswordIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                <svg id="hidePasswordIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Password Strength Indicator -->
+                        <div id="passwordStrength" class="absolute -bottom-1 left-0 right-0 h-1 bg-transparent rounded-b-xl overflow-hidden">
+                            <div id="passwordStrengthBar" class="h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button type="submit" 
+                                class="bg-gradient-to-r from-primary to-accent hover:from-blue-700 hover:to-cyan-500 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:scale-95 group">
+                            <span class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                                </svg>
+                                <span>Log In / Sign Up</span>
+                            </span>
+                        </button>
+                        
+                        <!-- Forgot Password Button with Icon -->
+                        <button type="button" onclick="showForgotPasswordModal()"
+                                class="relative px-4 py-2.5 text-xs text-text-light hover:text-primary transition-all duration-300 group"
+                                aria-label="Forgot Password">
+                            <svg class="w-4 h-4 mx-auto mb-1 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                            </svg>
+                            <span class="block">Forgot?</span>
+                            <span class="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Password Validation Tooltip -->
+                <div id="passwordTooltip" class="absolute z-50 bg-dark-bg border border-gray-700 rounded-lg p-3 shadow-xl max-w-xs hidden transform transition-all duration-300 opacity-0 -translate-y-2">
+                    <div class="text-sm space-y-1">
+                        <p class="font-semibold text-white mb-2">Password Requirements:</p>
+                        <div class="flex items-center space-x-2" id="lengthReq">
+                            <svg class="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            <span class="text-text-light">At least 8 characters</span>
+                        </div>
+                        <div class="flex items-center space-x-2" id="numberReq">
+                            <svg class="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            <span class="text-text-light">Contains number</span>
+                        </div>
+                        <div class="flex items-center space-x-2" id="specialReq">
+                            <svg class="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            <span class="text-text-light">Special character (!@#$)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -116,9 +369,8 @@
             <h3 class="text-primary text-lg font-semibold border-b-2 border-border-color pb-2 mb-4 mt-5">Quran Data & Documents</h3>
             <ul class="list-group">
                 <li class="p-2 rounded-lg hover:bg-secondary hover:text-primary transition"><a href="https://quran.com/">Quran Text</a></li>
-                <li class="p-2 rounded-lg hover:bg-secondary hover:text-primary transition"><a href="https://play.google.com/store/apps/details
-                    ?id=com.google.android.apps.translate&hl=fr">Translations</a></li>
-                <li class="p-2 rounded-lg hover:bg-secondary hover:text-primary transition"><a href=" https://www.canva.com/create/table-of-contents/">Table of Contents</a></li>
+                <li class="p-2 rounded-lg hover:bg-secondary hover:text-primary transition"><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.translate&hl=fr">Translations</a></li>
+                <li class="p-2 rounded-lg hover:bg-secondary hover:text-primary transition"><a href="https://www.canva.com/create/table-of-contents/">Table of Contents</a></li>
             </ul>
 
             <h3 class="text-primary text-lg font-semibold border-b-2 border-border-color pb-2 mb-4 mt-5">Quran Navigator</h3>
@@ -164,43 +416,25 @@
                 </div>
             </div>
             
-            <h3 class="text-success text-lg font-semibold border-b-2 border-border-color pb-2 mb-4 mt-5">Recitation Controls 🎧</h3>
-            <div class="space-y-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                <div class="tool-group">
-                    <label for="reciter-select" class="block font-semibold mb-1 text-sm text-gray-700">Select Qari (Reciter)</label>
-                    <select id="reciter-select" class="w-full p-2 border border-gray-300 rounded-md bg-white">
-                        <option value="mishary" selected>Mishary Alafasy</option>
-                        <option value="husary">Mahmoud Al-Husary</option>
-                        <option value="sudais">Abdul Rahman Al-Sudais</option>
-                        <option value="shuraim">Sa'ud Al-Shuraim</option>
-                        <option value="basit">Abdul Basit Abdul Samad</option>
-                    </select>
+            <h3 class="text-success text-lg font-semibold border-b-2 border-border-color pb-2 mb-4 mt-5">Recitation Player 🎧</h3>
+            <div class="space-y-4 p-3 bg-gradient-to-br from-green-50 to-blue-50 rounded-lg border border-green-200">
+                <div class="text-center mb-3">
+                    <h4 class="font-bold text-gray-800">Select Reciter</h4>
+                    <p class="text-xs text-gray-600">Surah Al-Baqarah, Verse 1 will play</p>
                 </div>
                 
-                <div class="tool-group">
+                <div id="reciterList" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                    <!-- Reciter cards will be populated here -->
+                </div>
+                
+                <div class="tool-group pt-3 border-t border-gray-200">
                     <label for="speed-select" class="block font-semibold mb-1 text-sm text-gray-700">Playback Speed</label>
                     <select id="speed-select" onchange="setSpeed(this.value)" class="w-full p-2 border border-gray-300 rounded-md bg-white">
                         <option value="1.0" selected>1.0x (Normal)</option>
                         <option value="0.75">0.75x (Slow)</option>
                         <option value="1.25">1.25x (Fast)</option>
+                        <option value="1.5">1.5x (Faster)</option>
                     </select>
-                </div>
-                
-                <div class="flex space-x-2 pt-2">
-                    <button onclick="startRecitation()" class="flex-1 bg-success hover:bg-green-700 text-white font-bold py-2 rounded-lg transition duration-200 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                        </svg>
-                        
-
-                        Play
-                    </button>
-                    <button onclick="stopRecitation()" class="flex-1 bg-danger hover:bg-red-700 text-white font-bold py-2 rounded-lg transition duration-200 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" />
-                        </svg>
-                        Stop
-                    </button>
                 </div>
             </div>
 
@@ -253,8 +487,7 @@
                     <li><a href="https://helw.net/2007/06/15/quran-facebook-application/" target="_blank" class="hover:text-primary hover:underline">Quran Verses: Facebook application</a></li>
                     <li><a href="https://apps.microsoft.com/detail/9p1zd3k91xqt" target="_blank" class="hover:text-primary hover:underline">Quran with Tafseer: Windows app</a></li>
                     <li><a href="https://www.tech-nova.co/index.php/blogs/programs/program-dangi-quran.html" target="_blank" class="hover:text-primary hover:underline">Dangi Quran: Kurdish/Arabic/English software</a></li>
-                    <li><a href="https://corpus.quran.com/java/api/index.html#:~:text=JQuran
-                        Tree%20is%20a%20set%20of,used%20to%20represent%20character%20data." target="_blank" class="hover:text-primary hover:underline">JQuranTree: Java APIs</a></li>
+                    <li><a href="https://corpus.quran.com/java/api/index.html#:~:text=JQuranTree%20is%20a%20set%20of,used%20to%20represent%20character%20data." target="_blank" class="hover:text-primary hover:underline">JQuranTree: Java APIs</a></li>
                     <li><a href="https://www.softpedia.com/get/Others/Home-Education/QuranCode.shtml" target="_blank" class="hover:text-primary hover:underline">QuranCode: Letter frequency software</a></li>
                     <li><a href="https://play.google.com/store/apps/details?id=my.smartech.quranmemorizer" target="_blank" class="hover:text-primary hover:underline">Mohaffez: Reciting software</a></li>
                     <li><a href="https://play.google.com/store/apps/details?id=com.imanimation.quranquest" target="_blank" class="hover:text-primary hover:underline">Quran Quest: Search software</a></li>
@@ -269,7 +502,6 @@
                     <li><a href="https://apps.apple.com/us/app/al-quran-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85/id1669712591" target="_blank" class="hover:text-primary hover:underline">alQuran: iPhone and iPod Touch</a></li>
                     <li><a href="https://www.kigalidiscount.com/collections/cell-phones-smartphones?srsltid=AfmBOopTWEWbrPdJHaGmwWn1ubVz41yvOc60yskn8etJihElNPeNHn9P" target="_blank" class="hover:text-primary hover:underline">uQuran: general mobile phones</a></li>
                     <li><a href="https://play.google.com/store/apps/details?id=com.atq.quranemajeedapp.org.mushaf" target="_blank" class="hover:text-primary hover:underline">Qiraat: Android</a></li>
-                    
                 </ul>
             </div>
             
@@ -286,21 +518,56 @@
                 </div>
             </div>
 
-            <audio id="quran-recitation-audio" class="hidden" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
-            
             <div id="aya-content" class="space-y-5">
-                </div>
-            <div class="text-center mt-10 text-xs text-gray-500">
-                
-          EMAIL:salimabdu759@gmail.com-whatsAPP+25073939715-MOBILE:0735281339-Location:kigali-RWANDA      MR ABDUSALIM© 2025–2026 | <Mockup class="1.jpeg"> <br>
+                <!-- Verse content will be populated here -->
+            </div>
+            
+            <!-- Enhanced Player Bar (Fixed at bottom) -->
+            <div class="player-bar fixed bottom-5 left-1/2 transform -translate-x-1/2 w-[90%] max-w-2xl p-4 rounded-2xl z-50 transition-all duration-300 opacity-0 pointer-events-none" id="playerBar">
+                <div class="flex items-center justify-between w-full">
+                    <div class="flex items-center space-x-4">
+                        <div class="visualizer" id="visualizer" style="opacity: 0;">
+                            <div class="bar" style="height: 30%; animation-delay: 0s;"></div>
+                            <div class="bar" style="height: 60%; animation-delay: 0.1s;"></div>
+                            <div class="bar" style="height: 80%; animation-delay: 0.2s;"></div>
+                            <div class="bar" style="height: 50%; animation-delay: 0.3s;"></div>
+                        </div>
+                        <div class="now-playing text-sm font-medium text-white" id="nowPlayingText">
+                            Select a reciter to begin
+                        </div>
+                    </div>
                     
-                    <img src="y.jpg" height="px" width="px" alt=""></Mockup>
+                    <div class="flex items-center space-x-3">
+                        <button class="ctrl-btn text-white hover:text-accent transition-colors" onclick="togglePlay()">
+                            <svg id="iconPlay" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            <svg id="iconPause" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="6" y="4" width="4" height="16"></rect>
+                                <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                        </button>
+                        <button class="ctrl-btn text-white hover:text-red-400 transition-colors" onclick="stopRecitation()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="6" y="6" width="12" height="12"></rect>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-16 text-xs text-gray-500">
+                EMAIL:salimabdu759@gmail.com - WhatsApp +25073939715 - MOBILE:0735281339 - Location:kigali-RWANDA<br>
+                MR ABDUSALIM© 2025–2026 | <Mockup class="1.jpeg">
+                <img src="y.jpg" alt="Footer Image" class="inline-block mt-2">
+                </Mockup>
             </div>
 
         </div>
     </div>
 
     <script>
+        // Firebase Configuration (Mock)
         const firebaseConfig = {
             apiKey: "AIzaSyD-mock-api-key-123",
             authDomain: "quran-app-mock.firebaseapp.com",
@@ -314,31 +581,36 @@
         let firebaseAuth = null;
         let firebaseDB = null;
 
-        function initializeFirebase() {
-            console.log("Mock Firebase: Initializing...");
-            if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
-                firebaseApp = firebase.initializeApp(firebaseConfig);
-                if (typeof firebase.auth === 'function') {
-                    firebaseAuth = firebase.auth();
-                } else {
-                    console.warn("Firebase Auth not loaded/mocked properly.");
-                }
-                if (typeof firebase.firestore === 'function') {
-                    firebaseDB = firebase.firestore(); 
-                } else {
-                     console.warn("Firebase Firestore not loaded/mocked properly.");
-                }
+        // Reciter Data for Enhanced Player
+        const recitersData = {
+           "1": {
+              "reciter": "Mishary Rashid Al Afasy",
+              "url": "https://the-quran-project.github.io/Quran-Audio/Data/1/2_1.mp3",
+              "originalUrl": "https://everyayah.com/data/Alafasy_128kbps/002001.mp3"
+           },
+           "2": {
+              "reciter": "Abu Bakr Al Shatri",
+              "url": "https://the-quran-project.github.io/Quran-Audio/Data/2/2_1.mp3",
+              "originalUrl": "https://everyayah.com/data/Abu_Bakr_Ash-Shaatree_128kbps/002001.mp3"
+           },
+           "3": {
+              "reciter": "Nasser Al Qatami",
+              "url": "https://the-quran-project.github.io/Quran-Audio/Data/3/2_1.mp3",
+              "originalUrl": "https://everyayah.com/data/Nasser_Alqatami_128kbps/002001.mp3"
+           },
+           "4": {
+              "reciter": "Yasser Al Dosari",
+              "url": "https://the-quran-project.github.io/Quran-Audio/Data/4/2_1.mp3",
+              "originalUrl": "https://everyayah.com/data/Yasser_Ad-Dussary_128kbps/002001.mp3"
+           },
+           "5": {
+              "reciter": "Hani Ar Rifai",
+              "url": "https://the-quran-project.github.io/Quran-Audio/Data/5/2_1.mp3",
+              "originalUrl": "https://everyayah.com/data/Hani_Rifai_192kbps/002001.mp3"
+           }
+        };
 
-                console.log("Mock Firebase: Initialized successfully.");
-            } else if (typeof firebase !== 'undefined') {
-                 firebaseApp = firebase.app();
-                 firebaseAuth = firebase.auth();
-                 firebaseDB = firebase.firestore();
-            } else {
-                 console.error("Firebase SDK not loaded.");
-            }
-        }
-        
+        // Surah Data
         const surahData = [
             { "surahName": "Al-Faatiha", "surahNameArabic": "الفاتحة", "surahNameTranslation": "The Opening", "totalAyah": 7 },
             { "surahName": "Al-Baqara", "surahNameArabic": "البقرة", "surahNameTranslation": "The Cow", "totalAyah": 286 },
@@ -456,6 +728,7 @@
             { "surahName": "An-Naas", "surahNameArabic": "الناس", "surahNameTranslation": "Mankind", "totalAyah": 6 }
         ];
         
+        // Mock Aya Data
         const mockAyaData = {
             '18:78': {
                 ayaNumber: 78,
@@ -470,10 +743,15 @@
                 source: "English: Sahih International"
             }
         };
-        let currentSurahIndex = 17;
+        
+        // State Variables
+        let currentSurahIndex = 17; // Al-Kahf
         let currentStartAya = 78;
         let currentEndAya = 79;
+        let audio = new Audio();
+        let currentReciterId = null;
         
+        // DOM Elements
         const surahSelect = document.getElementById('surah-select');
         const ayaSelect = document.getElementById('aya-select');
         const wordByWordToggle = document.getElementById('word-by-word-toggle');
@@ -482,10 +760,158 @@
         const surahTitleH1 = document.getElementById('surah-title');
         const authMessageDiv = document.getElementById('auth-message');
         const sidebarMenu = document.getElementById('sidebar-menu');
-        
-        const quranAudio = document.getElementById('quran-recitation-audio');
+        const playerBar = document.getElementById('playerBar');
+        const nowPlayingText = document.getElementById('nowPlayingText');
+        const iconPlay = document.getElementById('iconPlay');
+        const iconPause = document.getElementById('iconPause');
+        const visualizer = document.getElementById('visualizer');
+        const reciterListContainer = document.getElementById('reciterList');
 
-        
+        // Initialize Firebase (Mock)
+        function initializeFirebase() {
+            console.log("Mock Firebase: Initializing...");
+            if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+                firebaseApp = firebase.initializeApp(firebaseConfig);
+                if (typeof firebase.auth === 'function') {
+                    firebaseAuth = firebase.auth();
+                } else {
+                    console.warn("Firebase Auth not loaded/mocked properly.");
+                }
+                if (typeof firebase.firestore === 'function') {
+                    firebaseDB = firebase.firestore(); 
+                } else {
+                     console.warn("Firebase Firestore not loaded/mocked properly.");
+                }
+
+                console.log("Mock Firebase: Initialized successfully.");
+            } else if (typeof firebase !== 'undefined') {
+                 firebaseApp = firebase.app();
+                 firebaseAuth = firebase.auth();
+                 firebaseDB = firebase.firestore();
+            } else {
+                 console.error("Firebase SDK not loaded.");
+            }
+        }
+
+        // Initialize Enhanced Reciter Player
+        function initReciterPlayer() {
+            Object.keys(recitersData).forEach(key => {
+                const item = recitersData[key];
+                
+                // Get Initials for Avatar
+                const initials = item.reciter.split(' ').map(n => n[0]).slice(0,2).join('');
+                
+                // Create Card Element
+                const card = document.createElement('div');
+                card.className = 'card cursor-pointer';
+                card.id = `card-${key}`;
+                card.onclick = () => playReciter(key);
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center space-x-3">
+                            <div class="avatar w-10 h-10 rounded-full flex items-center justify-center font-bold text-accent">
+                                ${initials}
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 text-sm">${item.reciter}</h4>
+                                <p class="text-xs text-gray-600">Surah Al-Baqarah, Ayah 1</p>
+                            </div>
+                        </div>
+                        <svg class="status-icon w-5 h-5 text-gray-400" id="icon-${key}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                `;
+                
+                reciterListContainer.appendChild(card);
+            });
+        }
+
+        // Play Reciter Function
+        function playReciter(id) {
+            const item = recitersData[id];
+
+            // If clicking the same reciter that is already playing
+            if (currentReciterId === id && !audio.paused) {
+                togglePlay();
+                return;
+            }
+
+            // Reset UI for all cards
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            
+            // Set new Active UI
+            const newCard = document.getElementById(`card-${id}`);
+            if (newCard) newCard.classList.add('active');
+            
+            // Update State
+            currentReciterId = id;
+            audio.src = item.url;
+            
+            // Update Player Bar
+            nowPlayingText.textContent = `${item.reciter} - Surah Al-Baqarah:1`;
+            playerBar.classList.remove('opacity-0', 'pointer-events-none');
+            playerBar.classList.add('opacity-100', 'pointer-events-auto');
+
+            // Play Audio
+            audio.play()
+                .then(() => updatePlayIcon(true))
+                .catch(err => {
+                    console.error("Playback failed:", err);
+                    showAuthMessage("Playback failed. Please click play again.", "error");
+                });
+        }
+
+        // Toggle Play/Pause
+        function togglePlay() {
+            if (!currentReciterId) return;
+
+            if (audio.paused) {
+                audio.play();
+                updatePlayIcon(true);
+            } else {
+                audio.pause();
+                updatePlayIcon(false);
+            }
+        }
+
+        // Stop Recitation
+        function stopRecitation() {
+            audio.pause();
+            audio.currentTime = 0;
+            updatePlayIcon(false);
+            showAuthMessage('Recitation stopped.', 'danger');
+        }
+
+        // Update Play Icon
+        function updatePlayIcon(isPlaying) {
+            if (isPlaying) {
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+                visualizer.style.opacity = '1';
+            } else {
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
+                visualizer.style.opacity = '0';
+            }
+        }
+
+        // Set Playback Speed
+        function setSpeed(speed) {
+            if (audio) {
+                audio.playbackRate = parseFloat(speed);
+                showAuthMessage(`Playback speed set to ${speed}x.`, 'success');
+            }
+        }
+
+        // Audio ended handler
+        audio.onended = () => {
+            updatePlayIcon(false);
+            visualizer.style.opacity = '0';
+        };
+
+        // Fetch and Display Aya Content
         async function fetchAndDisplayAyaContent(surahIndex, startAya, endAya) {
             const surahNumber = surahIndex + 1;
             surahTitleH1.textContent = `Surah ${surahData[surahIndex].surahName} (${surahData[surahIndex].surahNameTranslation})`;
@@ -511,6 +937,7 @@
             renderAyaContent(fetchedAyas);
         }
 
+        // Render Aya Content
         function renderAyaContent(ayas) {
             ayaContentDiv.innerHTML = '';
             ayas.forEach(aya => {
@@ -533,11 +960,13 @@
                 ayaContentDiv.appendChild(card);
             });
         }
-        
+
+        // Toggle Sidebar (Mobile)
         function toggleSidebar() {
             sidebarMenu.classList.toggle('hidden');
         }
 
+        // Populate Surah Select
         function populateSurahSelect() {
             surahSelect.innerHTML = '';
             surahData.forEach((surah, index) => {
@@ -552,6 +981,7 @@
             });
         }
 
+        // Populate Aya Select
         function populateAyaSelect(surahIndex = currentSurahIndex, selectedAya = currentStartAya) {
             const totalAyah = surahData[surahIndex] ? surahData[surahIndex].totalAyah : 110;
             ayaSelect.innerHTML = '';
@@ -565,13 +995,15 @@
                 ayaSelect.appendChild(option);
             }
         }
-        
+
+        // Handle Word-by-Word Toggle
         function handleWordByWordToggle() {
             const isChecked = wordByWordToggle.checked;
             wordByWordLanguageSelect.disabled = !isChecked;
             console.log(`Word-by-Word is now ${isChecked ? 'Enabled' : 'Disabled'}`);
         }
-        
+
+        // Navigation Functions
         function goToPreviousPage() {
             const pageInfo = document.getElementById('page-info');
             const currentPageMatch = pageInfo.textContent.match(/Page (\d+)/);
@@ -611,42 +1043,8 @@
                 fetchAndDisplayAyaContent(currentSurahIndex, currentStartAya, currentEndAya);
             }
         }
-        
-        
-        function startRecitation() {
-            const reciter = document.getElementById('reciter-select').value;
-            const speed = document.getElementById('speed-select').value;
-            
-            if (quranAudio.src) {
-                quranAudio.playbackRate = parseFloat(speed); 
-                quranAudio.play()
-                    .then(() => {
-                        showAuthMessage(`Playing ${reciter} recitation at ${speed}x.`, 'success');
-                    })
-                    .catch(error => {
-                        showAuthMessage(`Playback failed. Please click "Play" again.`, 'error');
-                        console.error("Audio playback error. Did you try clicking Play without first interacting with the page?", error);
-                    });
-            } else {
-                showAuthMessage(`Error: Audio source not set.`, 'error');
-            }
-        }
 
-        function stopRecitation() {
-            quranAudio.pause(); 
-            quranAudio.currentTime = 0;
-            showAuthMessage('Recitation stopped.', 'danger');
-            console.log('Recitation: Stopped.');
-        }
-
-        function setSpeed(speed) {
-            if (quranAudio) {
-                quranAudio.playbackRate = parseFloat(speed);
-                showAuthMessage(`Playback speed set to ${speed}x.`, 'success');
-                console.log(`Recitation: Speed changed to ${speed}x. The audio element now has a playbackRate of ${quranAudio.playbackRate}.`);
-            }
-        }
-
+        // Auth Functions
         function handleAuthSubmit(event) {
             event.preventDefault();
             console.log("Mock Auth: Attempting login/signup...");
@@ -665,14 +1063,319 @@
                 authMessageDiv.className = 'fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-[-20px] opacity-0';
             }, 3000);
         }
-        
-        
+
+        // Enhanced Auth Functions
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const showIcon = document.getElementById('showPasswordIcon');
+            const hideIcon = document.getElementById('hidePasswordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showIcon.classList.add('hidden');
+                hideIcon.classList.remove('hidden');
+                
+                // Add animation
+                hideIcon.classList.add('animate-pulse');
+                setTimeout(() => hideIcon.classList.remove('animate-pulse'), 500);
+            } else {
+                passwordInput.type = 'password';
+                showIcon.classList.remove('hidden');
+                hideIcon.classList.add('hidden');
+                
+                // Add animation
+                showIcon.classList.add('animate-bounce');
+                setTimeout(() => showIcon.classList.remove('animate-bounce'), 500);
+            }
+        }
+
+        // Password Strength Checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const tooltip = document.getElementById('passwordTooltip');
+            
+            // Check criteria
+            const hasLength = password.length >= 8;
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            
+            // Update requirement indicators
+            updateRequirement('lengthReq', hasLength);
+            updateRequirement('numberReq', hasNumber);
+            updateRequirement('specialReq', hasSpecial);
+            
+            // Calculate strength
+            if (hasLength) strength++;
+            if (hasNumber) strength++;
+            if (hasSpecial) strength++;
+            
+            // Update strength bar
+            const percentage = (strength / 3) * 100;
+            strengthBar.style.width = `${percentage}%`;
+            
+            // Update colors based on strength
+            if (strength === 0) {
+                strengthBar.style.backgroundColor = '#dc3545'; // Red
+            } else if (strength === 1) {
+                strengthBar.style.backgroundColor = '#fd7e14'; // Orange
+            } else if (strength === 2) {
+                strengthBar.style.backgroundColor = '#ffc107'; // Yellow
+            } else {
+                strengthBar.style.backgroundColor = '#198754'; // Green
+            }
+        }
+
+        // Update requirement indicator
+        function updateRequirement(elementId, isValid) {
+            const element = document.getElementById(elementId);
+            const icon = element.querySelector('svg');
+            const text = element.querySelector('span');
+            
+            if (isValid) {
+                icon.classList.remove('text-red-400');
+                icon.classList.add('text-green-400');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>';
+                text.classList.add('text-green-400');
+                text.classList.remove('text-text-light');
+            } else {
+                icon.classList.remove('text-green-400');
+                icon.classList.add('text-red-400');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
+                text.classList.remove('text-green-400');
+                text.classList.add('text-text-light');
+            }
+        }
+
+        // Forgot Password Modal Functions
+        function showForgotPasswordModal() {
+            const modal = document.getElementById('forgotPasswordModal');
+            const modalContent = modal.querySelector('div');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('flex');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            // Add floating animation to icon
+            const icon = modal.querySelector('.p-2 svg');
+            icon.style.animation = 'float 3s ease-in-out infinite';
+        }
+
+        function hideForgotPasswordModal() {
+            const modal = document.getElementById('forgotPasswordModal');
+            const modalContent = modal.querySelector('div');
+            
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.getElementById('forgotPasswordMessage').classList.add('hidden');
+                document.getElementById('resetEmail').value = '';
+            }, 300);
+        }
+
+        // Handle Forgot Password Submission
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('resetEmail').value;
+            const messageDiv = document.getElementById('forgotPasswordMessage');
+            
+            // Validate email
+            if (!email || !email.includes('@')) {
+                showMessage(messageDiv, 'Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = `
+                <span class="flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>Sending...</span>
+                </span>
+            `;
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Mock successful response
+                showMessage(messageDiv, `Reset link sent to ${email}. Please check your inbox.`, 'success');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Show success animation
+                showSuccessAnimation();
+                
+                // Close modal after 3 seconds
+                setTimeout(() => {
+                    hideForgotPasswordModal();
+                }, 3000);
+            }, 1500);
+        }
+
+        // Show message in modal
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.classList.remove('hidden');
+            
+            if (type === 'success') {
+                element.className = 'mt-4 p-3 rounded-lg bg-green-900/30 text-green-400 border border-green-800';
+            } else {
+                element.className = 'mt-4 p-3 rounded-lg bg-red-900/30 text-red-400 border border-red-800';
+            }
+        }
+
+        // Success Animation
+        function showSuccessAnimation() {
+            const animation = document.getElementById('successAnimation');
+            animation.classList.remove('hidden');
+            
+            setTimeout(() => {
+                animation.classList.add('hidden');
+            }, 2000);
+        }
+
+        // Enhanced Auth Handler
+        function handleEnhancedAuthSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const email = form.querySelector('input[type="email"]').value;
+            const password = form.querySelector('input[type="password"]').value;
+            
+            // Show loading animation
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = `
+                <span class="flex items-center space-x-2">
+                    <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>Authenticating...</span>
+                </span>
+            `;
+            submitBtn.disabled = true;
+            
+            // Simulate authentication process
+            setTimeout(() => {
+                // Mock successful authentication
+                showAuthMessage("✨ Welcome! Authentication successful.", 'success');
+                
+                // Show success animation
+                showSuccessAnimation();
+                
+                // Reset form
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+                
+                // Add user feedback with particle effect
+                createParticleEffect(submitBtn);
+                
+            }, 2000);
+        }
+
+        // Particle Effect for Success
+        function createParticleEffect(element) {
+            const rect = element.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 4px;
+                    height: 4px;
+                    background: linear-gradient(45deg, #38bdf8, #0b5ed7);
+                    border-radius: 50%;
+                    z-index: 1000;
+                    pointer-events: none;
+                    left: ${centerX}px;
+                    top: ${centerY}px;
+                `;
+                
+                document.body.appendChild(particle);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 30 + Math.random() * 40;
+                const duration = 500 + Math.random() * 500;
+                
+                particle.animate([
+                    {
+                        transform: `translate(0, 0) scale(1)`,
+                        opacity: 1
+                    },
+                    {
+                        transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+                        opacity: 0
+                    }
+                ], {
+                    duration: duration,
+                    easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }).onfinish = () => particle.remove();
+            }
+        }
+
+        // Initialize enhanced auth features
+        function initAuthFeatures() {
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordTooltip = document.getElementById('passwordTooltip');
+            let tooltipTimeout;
+            
+            // Real-time password strength check
+            passwordInput.addEventListener('input', (e) => {
+                checkPasswordStrength(e.target.value);
+            });
+            
+            // Show/hide password tooltip on focus
+            passwordInput.addEventListener('focus', () => {
+                clearTimeout(tooltipTimeout);
+                passwordTooltip.classList.remove('hidden', 'opacity-0', '-translate-y-2');
+                passwordTooltip.classList.add('block', 'opacity-100', 'translate-y-0');
+                
+                // Position tooltip
+                const rect = passwordInput.getBoundingClientRect();
+                passwordTooltip.style.left = `${rect.left}px`;
+                passwordTooltip.style.top = `${rect.bottom + 10}px`;
+            });
+            
+            passwordInput.addEventListener('blur', () => {
+                tooltipTimeout = setTimeout(() => {
+                    passwordTooltip.classList.remove('opacity-100', 'translate-y-0');
+                    passwordTooltip.classList.add('opacity-0', '-translate-y-2');
+                    setTimeout(() => passwordTooltip.classList.add('hidden'), 300);
+                }, 300);
+            });
+            
+            // Initialize with empty password check
+            checkPasswordStrength('');
+            
+            // Override the old auth handler with the enhanced one
+            const authForm = document.getElementById('auth-controls');
+            if (authForm) {
+                authForm.onsubmit = handleEnhancedAuthSubmit;
+            }
+        }
+
+        // Initialize Everything
         document.addEventListener('DOMContentLoaded', () => {
             initializeFirebase();
             populateSurahSelect();
             populateAyaSelect();
             fetchAndDisplayAyaContent(currentSurahIndex, currentStartAya, currentEndAya);
+            initReciterPlayer();
+            initAuthFeatures(); // Initialize enhanced auth features
             
+            // Event Listeners
             surahSelect.addEventListener('change', (event) => {
                 const newSurahNumber = parseInt(event.target.value);
                 currentSurahIndex = newSurahNumber - 1;
@@ -685,13 +1388,25 @@
             
             wordByWordToggle.addEventListener('change', handleWordByWordToggle);
             
-            window.handleAuthSubmit = handleAuthSubmit;
+            // Global Functions
+            window.handleAuthSubmit = handleEnhancedAuthSubmit;
             window.goToPreviousPage = goToPreviousPage;
             window.goToNextPage = goToNextPage;
-            window.toggleSidebar = toggleSidebar; 
-            window.startRecitation = startRecitation;
+            window.toggleSidebar = toggleSidebar;
+            window.startRecitation = () => {
+                if (currentReciterId) {
+                    playReciter(currentReciterId);
+                } else {
+                    showAuthMessage("Please select a reciter first.", "error");
+                }
+            };
             window.stopRecitation = stopRecitation;
             window.setSpeed = setSpeed;
+            window.togglePlay = togglePlay;
+            window.togglePasswordVisibility = togglePasswordVisibility;
+            window.showForgotPasswordModal = showForgotPasswordModal;
+            window.hideForgotPasswordModal = hideForgotPasswordModal;
+            window.handleForgotPassword = handleForgotPassword;
         });
     </script>
 </body>
