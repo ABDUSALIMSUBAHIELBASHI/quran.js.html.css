@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR ABDUSALIM Quran Navigator with Enhanced Recitation Player & Search</title>
+    <title>APPLICATION QURAN Navigator with Enhanced Recitation Player & System Settings</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -22,14 +22,19 @@
                         'border-color': '#e9ecef',
                         'accent': '#38bdf8',
                         'player-bg': 'rgba(15, 23, 42, 0.9)',
+                        'system-blue': '#2563eb',
+                        'system-green': '#10b981',
+                        'system-purple': '#8b5cf6',
                     },
                     fontFamily: {
                         sans: ['"Segoe UI"', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
                         arabic: ['Amiri', 'serif'],
                         inter: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['Monaco', 'Consolas', 'monospace'],
                     },
                     spacing: {
                         'sidebar': '320px',
+                        'system': '400px',
                     },
                     animation: {
                         'fadeInDown': 'fadeInDown 0.8s ease-out',
@@ -38,6 +43,8 @@
                         'shimmer': 'shimmer 2s infinite linear',
                         'spin': 'spin 1s linear infinite',
                         'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 2s linear infinite',
                     },
                     keyframes: {
                         fadeInDown: {
@@ -55,6 +62,10 @@
                         shimmer: {
                             '0%': { backgroundPosition: '-200% center' },
                             '100%': { backgroundPosition: '200% center' },
+                        },
+                        scan: {
+                            '0%': { transform: 'translateY(0%)' },
+                            '100%': { transform: 'translateY(100%)' },
                         }
                     }
                 }
@@ -176,7 +187,7 @@
         
         /* Google Search Styles */
         .google-search-container {
-            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
+            background: linear-gradient(135deg, #4285f4, #eca31c, hsl(54, 96%, 54%), hsl(0, 6%, 6%));
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
         }
@@ -204,15 +215,684 @@
         .google-signin-btn:active {
             background: #e8e8e8;
         }
+        
+        /* System Settings Styles */
+        .system-setting-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .system-setting-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .setting-icon {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 12px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* QR Code Styles */
+        .qr-code-container {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px dashed rgba(59, 130, 246, 0.3);
+        }
+        
+        .qr-scan-line {
+            background: linear-gradient(to bottom, transparent, #3b82f6, transparent);
+            height: 4px;
+            width: 100%;
+            animation: scan 2s linear infinite;
+        }
+        
+        /* Media Sharing Styles */
+        .media-item {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .media-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+        }
+        
+        /* Wi-Fi Network Styles */
+        .wifi-network {
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .wifi-network.connected {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .wifi-network.available {
+            border-left-color: #3b82f6;
+        }
+        
+        .wifi-network.hidden {
+            border-left-color: #f59e0b;
+        }
+        
+        /* Bluetooth Styles */
+        .bluetooth-device {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .bluetooth-device:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        
+        .bluetooth-device.connected {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Network Signal Bars */
+        .signal-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 16px;
+        }
+        
+        .signal-bar {
+            width: 4px;
+            background-color: #10b981;
+            border-radius: 1px;
+        }
+        
+        .signal-bar:nth-child(1) { height: 25%; }
+        .signal-bar:nth-child(2) { height: 50%; }
+        .signal-bar:nth-child(3) { height: 75%; }
+        .signal-bar:nth-child(4) { height: 100%; }
+        
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            height: 8px;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
     </style>
     
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
     <!-- Add Google Identity Services SDK -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body class="bg-secondary text-gray-800 font-inter">
+
+    <!-- System Settings Modal -->
+    <div id="systemSettingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-lg z-[100] hidden items-center justify-center transition-opacity duration-300">
+        <div class="bg-gradient-to-br from-dark-bg to-gray-900 rounded-2xl p-6 max-w-4xl w-[95%] mx-4 transform transition-all duration-300 scale-95 opacity-0 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="setting-icon p-2">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">System Settings</h3>
+                        <p class="text-sm text-text-light">Configure your application settings</p>
+                    </div>
+                </div>
+                <button onclick="hideSystemSettingsModal()" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto pr-2">
+                <!-- Web & Software Updates -->
+                <div class="system-setting-card rounded-xl p-5 mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-system-blue/20 rounded-lg">
+                                <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Web & Software Updates</h4>
+                                <p class="text-xs text-text-light">Keep your application up to date</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoUpdateToggle" checked onchange="toggleAutoUpdate(this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div id="updateStatus" class="mt-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-white">Current Version: 2.5.1</span>
+                            <span class="text-xs text-system-green">Latest</span>
+                        </div>
+                        <div class="progress-container">
+                            <div id="updateProgress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-xs text-text-light">Last checked: Just now</span>
+                            <button onclick="checkForUpdates()" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                Check for Updates
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Media Sharing Section -->
+                <div class="system-setting-card rounded-xl p-5 mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-system-purple/20 rounded-lg">
+                                <svg class="w-5 h-5 text-system-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Media Sharing</h4>
+                                <p class="text-xs text-text-light">Share music, photos, and videos over network</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="mediaSharingToggle" onchange="toggleMediaSharing(this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div id="mediaSharingContent" class="mt-3 hidden">
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Shared Folders</h5>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <svg class="w-5 h-5 text-system-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                                        </svg>
+                                        <span class="text-sm text-white">Music</span>
+                                    </div>
+                                    <span class="text-xs text-text-light">~/Music</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <svg class="w-5 h-5 text-system-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span class="text-sm text-white">Photos</span>
+                                    </div>
+                                    <span class="text-xs text-text-light">~/Pictures</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <svg class="w-5 h-5 text-system-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span class="text-sm text-white">Videos</span>
+                                    </div>
+                                    <span class="text-xs text-text-light">~/Videos</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Network Sharing Options</h5>
+                            <div class="space-y-3">
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" id="shareMusic" checked class="rounded text-system-purple">
+                                    <span class="text-sm text-white">Share Music Library</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" id="sharePhotos" checked class="rounded text-system-purple">
+                                    <span class="text-sm text-white">Share Photo Albums</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" id="shareVideos" class="rounded text-system-purple">
+                                    <span class="text-sm text-white">Share Video Library</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Access Control</h5>
+                            <div class="flex space-x-2">
+                                <button onclick="setMediaSharingAccess('public')" 
+                                        class="flex-1 py-2 px-3 text-xs bg-system-purple/20 text-system-purple rounded-lg hover:bg-system-purple/30 transition-colors">
+                                    Public (All devices)
+                                </button>
+                                <button onclick="setMediaSharingAccess('private')" 
+                                        class="flex-1 py-2 px-3 text-xs bg-gray-800 text-text-light rounded-lg hover:bg-gray-700 transition-colors">
+                                    Private (Selected devices)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Wi-Fi Networks Section -->
+                <div class="system-setting-card rounded-xl p-5 mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-system-blue/20 rounded-lg">
+                                <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Wi-Fi Networks</h4>
+                                <p class="text-xs text-text-light">Manage saved and available networks</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="wifiToggle" checked onchange="toggleWiFi(this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div id="wifiContent" class="mt-3">
+                        <!-- Current Connection -->
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Current Connection</h5>
+                            <div class="wifi-network connected p-3 rounded-lg mb-3">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="signal-bars">
+                                            <div class="signal-bar"></div>
+                                            <div class="signal-bar"></div>
+                                            <div class="signal-bar"></div>
+                                            <div class="signal-bar"></div>
+                                        </div>
+                                        <div>
+                                            <span class="text-sm font-medium text-white">Home Wi-Fi</span>
+                                            <p class="text-xs text-system-green">Connected</p>
+                                        </div>
+                                    </div>
+                                    <button onclick="disconnectWiFi()" class="text-xs text-danger hover:text-red-400 transition-colors">
+                                        Disconnect
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Saved Networks -->
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Saved Networks</h5>
+                            <div class="space-y-2">
+                                <div class="wifi-network available p-3 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="signal-bars">
+                                                <div class="signal-bar"></div>
+                                                <div class="signal-bar"></div>
+                                                <div class="signal-bar"></div>
+                                            </div>
+                                            <span class="text-sm text-white">Office Network</span>
+                                        </div>
+                                        <button onclick="connectToWiFi('Office Network')" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                            Connect
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="wifi-network available p-3 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="signal-bars">
+                                                <div class="signal-bar"></div>
+                                                <div class="signal-bar"></div>
+                                            </div>
+                                            <span class="text-sm text-white">Coffee Shop</span>
+                                        </div>
+                                        <button onclick="connectToWiFi('Coffee Shop')" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                            Connect
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden Network Connection -->
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Connect to Hidden Network</h5>
+                            <div class="wifi-network hidden p-3 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                                    </svg>
+                                    <div class="flex-1">
+                                        <input type="text" id="hiddenNetworkSSID" placeholder="Network Name (SSID)" 
+                                               class="w-full bg-transparent text-white placeholder-gray-500 text-sm border-none focus:ring-0 p-0">
+                                    </div>
+                                    <button onclick="connectToHiddenNetwork()" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                        Connect
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Scan for Networks -->
+                        <div>
+                            <button onclick="scanForNetworks()" 
+                                    class="w-full py-2.5 px-4 bg-system-blue/20 text-system-blue rounded-lg text-sm font-medium hover:bg-system-blue/30 transition-colors flex items-center justify-center space-x-2">
+                                <svg class="w-4 h-4 animate-spin hidden" id="scanSpinner" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                <span id="scanText">Scan for Networks</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bluetooth Section -->
+                <div class="system-setting-card rounded-xl p-5 mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-system-blue/20 rounded-lg">
+                                <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Bluetooth</h4>
+                                <p class="text-xs text-text-light">Connect to Bluetooth devices</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="bluetoothToggle" onchange="toggleBluetooth(this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div id="bluetoothContent" class="mt-3 hidden">
+                        <!-- Bluetooth Dongle Status -->
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Bluetooth Adapter</h5>
+                            <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                    <div>
+                                        <span class="text-sm text-white">Bluetooth Dongle</span>
+                                        <p class="text-xs text-text-light" id="dongleStatus">Not detected</p>
+                                    </div>
+                                </div>
+                                <button onclick="detectBluetoothDongle()" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                    Detect
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Available Devices -->
+                        <div class="mb-4">
+                            <h5 class="text-sm font-medium text-white mb-2">Available Devices</h5>
+                            <div class="space-y-2">
+                                <div class="bluetooth-device p-3 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                                            </svg>
+                                            <div>
+                                                <span class="text-sm text-white">Wireless Headphones</span>
+                                                <p class="text-xs text-text-light">Bose QC35</p>
+                                            </div>
+                                        </div>
+                                        <button onclick="connectBluetoothDevice('Bose QC35')" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                            Pair
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bluetooth-device p-3 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                                            </svg>
+                                            <div>
+                                                <span class="text-sm text-white">Wireless Speaker</span>
+                                                <p class="text-xs text-text-light">JBL Flip 5</p>
+                                            </div>
+                                        </div>
+                                        <button onclick="connectBluetoothDevice('JBL Flip 5')" class="text-xs text-system-blue hover:text-accent transition-colors">
+                                            Pair
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Connected Devices -->
+                        <div>
+                            <h5 class="text-sm font-medium text-white mb-2">Connected Devices</h5>
+                            <div class="space-y-2">
+                                <div class="bluetooth-device connected p-3 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center space-x-3">
+                                            <svg class="w-5 h-5 text-system-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            <div>
+                                                <span class="text-sm text-white">Smart Watch</span>
+                                                <p class="text-xs text-system-green">Connected</p>
+                                            </div>
+                                        </div>
+                                        <button onclick="disconnectBluetoothDevice('Smart Watch')" class="text-xs text-danger hover:text-red-400 transition-colors">
+                                            Disconnect
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- QR Code Display -->
+                <div class="system-setting-card rounded-xl p-5 mb-4">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-2 bg-system-green/20 rounded-lg">
+                            <svg class="w-5 h-5 text-system-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-white">QR Code Display</h4>
+                            <p class="text-xs text-text-light">Share application link via QR code</p>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-code-container rounded-xl p-6 flex flex-col items-center justify-center">
+                        <div class="relative mb-4">
+                            <div id="qrcode" class="p-4 bg-white rounded-lg"></div>
+                            <div class="qr-scan-line"></div>
+                        </div>
+                        <p class="text-sm text-white text-center mb-4">Scan to open Quran Application</p>
+                        <div class="flex space-x-3">
+                            <button onclick="generateQRCode()" 
+                                    class="py-2 px-4 bg-system-green text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+                                Generate New QR
+                            </button>
+                            <button onclick="downloadQRCode()" 
+                                    class="py-2 px-4 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors">
+                                Download QR
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5 class="text-sm font-medium text-white mb-2">QR Code Content</h5>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="qrContent" 
+                                   value="https://abdusalimsubahielbashi.github.io/quran-app/" 
+                                   class="flex-1 bg-gray-800 text-white text-sm rounded-lg px-3 py-2 border border-gray-700 focus:border-system-green focus:ring-0">
+                            <button onclick="updateQRCode()" 
+                                    class="py-2 px-3 bg-system-green/20 text-system-green rounded-lg text-sm hover:bg-system-green/30 transition-colors">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Google Contact Integration -->
+                <div class="system-setting-card rounded-xl p-5">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-2 bg-system-blue/20 rounded-lg">
+                            <svg class="w-5 h-5 text-system-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-white">Google Contact</h4>
+                            <p class="text-xs text-text-light">Connect with developer via Google</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 p-4 bg-gray-800/50 rounded-lg mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-system-blue to-system-purple flex items-center justify-center text-white font-bold">
+                            AS
+                        </div>
+                        <div class="flex-1">
+                            <h5 class="text-sm font-medium text-white">Abdus Alim</h5>
+                            <p class="text-xs text-text-light">Quran Application Developer</p>
+                            <p class="text-xs text-system-blue mt-1">salimabdu759@gmail.com</p>
+                        </div>
+                        <a href="https://contacts.google.com/" target="_blank" 
+                           class="py-2 px-4 bg-system-blue text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors">
+                            Add to Contacts
+                        </a>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <a href="https://abdusalimsubahielbashi.github.io/my-Portfolio/" target="_blank"
+                           class="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-colors group">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-system-blue group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                                </svg>
+                                <span class="text-sm text-white">Portfolio Website</span>
+                            </div>
+                            <svg class="w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                        
+                        <a href="https://github.com/ABDUSALIMSUBAHIELBASHI" target="_blank"
+                           class="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-colors group">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-white group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="text-sm text-white">GitHub Profile</span>
+                            </div>
+                            <svg class="w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                        
+                        <a href="https://wa.me/25073939715" target="_blank"
+                           class="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-colors group">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-system-green group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2m.01 1.67c2.24 0 4.35.87 5.94 2.45a8.362 8.362 0 012.45 5.94c0 4.61-3.74 8.34-8.34 8.34-1.49 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.343 8.343 0 01-1.26-4.28c0-4.61 3.74-8.34 8.34-8.34z"/>
+                                </svg>
+                                <span class="text-sm text-white">WhatsApp: +25073939715</span>
+                            </div>
+                            <svg class="w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-800 flex justify-between">
+                <button onclick="applySystemSettings()" 
+                        class="px-6 py-3 bg-gradient-to-r from-system-blue to-system-purple text-white font-semibold rounded-lg hover:opacity-90 transition-opacity">
+                    Apply Settings
+                </button>
+                <button onclick="hideSystemSettingsModal()" 
+                        class="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing HTML structure continues here... -->
 
     <div id="auth-message" class="fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-[-20px] opacity-0"></div>
 
@@ -334,11 +1014,12 @@
         </div>
     </div>
 
+    <!-- Header Section -->
     <div class="bg-dark-bg text-white border-b border-gray-700 p-3 flex flex-wrap justify-between items-center shadow-md">
         <div class="flex items-center space-x-4 mb-2 sm:mb-0">
             <img src="1.jpeg" width="60px" height="40px" alt="Logo">
             <a href="https://abdusalimsubahielbashi.github.io/my-Portfolio/" class="text-text-light hover:text-primary text-sm">SKIP TO CONTENT</a>
-            <strong class="text-amber-400">MR ABDUSALIM</strong>
+            <strong class="text-amber-400">APPLICATION QURAN</strong>
         </div>
         
         <div class="flex items-center space-x-4 flex-wrap sm:flex-nowrap">
@@ -347,7 +1028,7 @@
                 <a href="https://news.google.com/home?hl=en-US&gl=US&ceid=US:en" class="text-text-light hover:text-primary text-sm">NEWS</a>
                 <a href="https://docs.google.com/document/u/0/" class="text-text-light hover:text-primary text-sm">DOCS</a>
                 <a href="https://abdusalimsubahielbashi.github.io/Comment-Code-JS-HTML-CSS/" class="text-text-light hover:text-primary text-sm">FAQ</a>
-                <a href="https://github.com/ABDUSALIMSUBAHIELBASHI?tab=repositories" target="_blank" class="text-yellow-400 font-bold text-sm">QuranAPI</a>
+                <a href="https://github.com/ABDUSALIMSUBAHIELBASHI?tab=repositories" target="_blank" class="text-yellow-400 font-bold text-sm">APP.QU.N GITHUP Links</a>
             </div>
 
             <!-- Enhanced Auth Section with Modern 2025 Design -->
@@ -455,8 +1136,19 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Add System Settings Button -->
+        <button onclick="showSystemSettingsModal()" 
+                class="flex items-center space-x-2 px-4 py-2 bg-system-blue/20 text-system-blue rounded-lg text-sm hover:bg-system-blue/30 transition-colors ml-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>System Settings</span>
+        </button>
     </div>
 
+    <!-- Main App Container -->
     <div class="app-container grid lg:grid-cols-[320px_1fr] gap-5 max-w-7xl mx-auto my-5 p-4 lg:p-0">
         
         <div class="lg:hidden mb-4 flex space-x-2">
@@ -482,12 +1174,12 @@
                     <div class="flex items-center space-x-2">
                         <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                             <span class="text-2xl font-bold">
-                                <span style="color: #4285f4">G</span>
-                                <span style="color: #ea4335">o</span>
-                                <span style="color: #fbbc05">o</span>
-                                <span style="color: #4285f4">g</span>
-                                <span style="color: #34a853">l</span>
-                                <span style="color: #ea4335">e</span>
+                                <span style="color: hsl(0, 0%, 1%)">G</span>
+                                <span style="color: #0a0a0a">o</span>
+                                <span style="color: hsl(60, 9%, 4%)">o</span>
+                                <span style="color: hwb(240 4% 95%) 4% 95%)">g</span>
+                                <span style="color: hwb(135 9% 90%)">l</span>
+                                <span style="color: hsl(0, 3%, 6%)">e</span>
                             </span>
                         </div>
                         <h3 class="text-white font-bold text-lg">Google Search</h3>
@@ -753,7 +1445,7 @@
 
             <div class="text-center mt-16 text-xs text-gray-500">
                 EMAIL:salimabdu759@gmail.com - WhatsApp +25073939715 - MOBILE:0735281339 - Location:kigali-RWANDA<br>
-                MR ABDUSALIM© 2025–2026 | <Mockup class="1.jpeg">
+                APPLICATION QURAN© 2025–2026 | <Mockup class="1.jpeg">
                 <img src="y.jpg" alt="Footer Image" class="inline-block mt-2">
                 </Mockup>
             </div>
@@ -775,6 +1467,22 @@
         let firebaseApp = null;
         let firebaseAuth = null;
         let firebaseDB = null;
+        let firebaseStorage = null;
+
+        // System Settings Data
+        const systemSettings = {
+            autoUpdate: true,
+            mediaSharing: false,
+            wifiEnabled: true,
+            bluetoothEnabled: false,
+            currentWiFi: "Home Wi-Fi",
+            connectedDevices: ["Smart Watch"],
+            mediaFolders: {
+                music: "~/Music",
+                videos: "~/Videos",
+                pictures: "~/Pictures"
+            }
+        };
 
         // Reciter Data for Enhanced Player
         const recitersData = {
@@ -963,6 +1671,322 @@
         const visualizer = document.getElementById('visualizer');
         const reciterListContainer = document.getElementById('reciterList');
 
+        // System Settings Functions
+        function showSystemSettingsModal() {
+            const modal = document.getElementById('systemSettingsModal');
+            const modalContent = modal.querySelector('div');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('flex');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            // Load current settings
+            loadSystemSettings();
+            
+            // Generate initial QR code
+            generateQRCode();
+        }
+
+        function hideSystemSettingsModal() {
+            const modal = document.getElementById('systemSettingsModal');
+            const modalContent = modal.querySelector('div');
+            
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function loadSystemSettings() {
+            // Set toggle states
+            document.getElementById('autoUpdateToggle').checked = systemSettings.autoUpdate;
+            document.getElementById('mediaSharingToggle').checked = systemSettings.mediaSharing;
+            document.getElementById('wifiToggle').checked = systemSettings.wifiEnabled;
+            document.getElementById('bluetoothToggle').checked = systemSettings.bluetoothEnabled;
+            
+            // Show/hide content based on toggles
+            toggleMediaSharing(systemSettings.mediaSharing);
+            toggleWiFi(systemSettings.wifiEnabled);
+            toggleBluetooth(systemSettings.bluetoothEnabled);
+            
+            // Update Bluetooth dongle status
+            updateDongleStatus();
+        }
+
+        function toggleAutoUpdate(enabled) {
+            systemSettings.autoUpdate = enabled;
+            showSystemMessage(`Auto updates ${enabled ? 'enabled' : 'disabled'}`, enabled ? 'success' : 'warning');
+        }
+
+        function toggleMediaSharing(enabled) {
+            systemSettings.mediaSharing = enabled;
+            const content = document.getElementById('mediaSharingContent');
+            
+            if (enabled) {
+                content.classList.remove('hidden');
+                showSystemMessage('Media sharing enabled', 'success');
+            } else {
+                content.classList.add('hidden');
+                showSystemMessage('Media sharing disabled', 'warning');
+            }
+        }
+
+        function toggleWiFi(enabled) {
+            systemSettings.wifiEnabled = enabled;
+            const content = document.getElementById('wifiContent');
+            
+            if (enabled) {
+                content.style.display = 'block';
+                showSystemMessage('Wi-Fi enabled', 'success');
+            } else {
+                content.style.display = 'none';
+                showSystemMessage('Wi-Fi disabled', 'warning');
+            }
+        }
+
+        function toggleBluetooth(enabled) {
+            systemSettings.bluetoothEnabled = enabled;
+            const content = document.getElementById('bluetoothContent');
+            
+            if (enabled) {
+                content.classList.remove('hidden');
+                showSystemMessage('Bluetooth enabled', 'success');
+                detectBluetoothDongle();
+            } else {
+                content.classList.add('hidden');
+                showSystemMessage('Bluetooth disabled', 'warning');
+            }
+        }
+
+        function checkForUpdates() {
+            const progressBar = document.getElementById('updateProgress');
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = `
+                <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>Checking...</span>
+            `;
+            button.disabled = true;
+            
+            // Simulate update check
+            setTimeout(() => {
+                progressBar.style.width = '30%';
+                
+                setTimeout(() => {
+                    progressBar.style.width = '60%';
+                    
+                    setTimeout(() => {
+                        progressBar.style.width = '100%';
+                        showSystemMessage('You have the latest version (2.5.1)', 'success');
+                        
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                    }, 500);
+                }, 500);
+            }, 1000);
+        }
+
+        function setMediaSharingAccess(access) {
+            showSystemMessage(`Media sharing set to ${access} access`, 'success');
+        }
+
+        function disconnectWiFi() {
+            systemSettings.currentWiFi = null;
+            showSystemMessage('Disconnected from Wi-Fi', 'warning');
+            event.target.closest('.wifi-network').classList.remove('connected');
+            event.target.closest('.wifi-network').querySelector('p').textContent = 'Not connected';
+            event.target.textContent = 'Connect';
+            event.target.onclick = () => connectToWiFi('Home Wi-Fi');
+        }
+
+        function connectToWiFi(networkName) {
+            systemSettings.currentWiFi = networkName;
+            showSystemMessage(`Connected to ${networkName}`, 'success');
+            event.target.closest('.wifi-network').classList.add('connected');
+            event.target.closest('.wifi-network').querySelector('p').textContent = 'Connected';
+            event.target.textContent = 'Disconnect';
+            event.target.onclick = disconnectWiFi;
+        }
+
+        function connectToHiddenNetwork() {
+            const ssid = document.getElementById('hiddenNetworkSSID').value;
+            if (ssid.trim()) {
+                showSystemMessage(`Connecting to hidden network: ${ssid}`, 'success');
+                // In a real app, you would connect to the network here
+            } else {
+                showSystemMessage('Please enter a network name', 'error');
+            }
+        }
+
+        function scanForNetworks() {
+            const button = event.target.closest('button');
+            const spinner = document.getElementById('scanSpinner');
+            const scanText = document.getElementById('scanText');
+            
+            spinner.classList.remove('hidden');
+            scanText.textContent = 'Scanning...';
+            button.disabled = true;
+            
+            // Simulate network scan
+            setTimeout(() => {
+                spinner.classList.add('hidden');
+                scanText.textContent = 'Scan for Networks';
+                button.disabled = false;
+                showSystemMessage('Found 5 available networks', 'success');
+            }, 2000);
+        }
+
+        function updateDongleStatus() {
+            const status = document.getElementById('dongleStatus');
+            if (systemSettings.bluetoothEnabled) {
+                status.textContent = 'Connected via USB';
+                status.classList.remove('text-text-light');
+                status.classList.add('text-system-green');
+            } else {
+                status.textContent = 'Not detected';
+                status.classList.remove('text-system-green');
+                status.classList.add('text-text-light');
+            }
+        }
+
+        function detectBluetoothDongle() {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            button.textContent = 'Detecting...';
+            button.disabled = true;
+            
+            // Simulate dongle detection
+            setTimeout(() => {
+                systemSettings.bluetoothEnabled = true;
+                updateDongleStatus();
+                button.textContent = 'Detected';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 1000);
+                
+                showSystemMessage('Bluetooth dongle detected', 'success');
+            }, 1500);
+        }
+
+        function connectBluetoothDevice(deviceName) {
+            if (!systemSettings.connectedDevices.includes(deviceName)) {
+                systemSettings.connectedDevices.push(deviceName);
+                showSystemMessage(`Connected to ${deviceName}`, 'success');
+                
+                // Update UI
+                const deviceElement = event.target.closest('.bluetooth-device');
+                deviceElement.classList.add('connected');
+                const statusElement = deviceElement.querySelector('p');
+                statusElement.textContent = 'Connected';
+                statusElement.classList.remove('text-text-light');
+                statusElement.classList.add('text-system-green');
+                event.target.textContent = 'Disconnect';
+                event.target.onclick = () => disconnectBluetoothDevice(deviceName);
+            }
+        }
+
+        function disconnectBluetoothDevice(deviceName) {
+            const index = systemSettings.connectedDevices.indexOf(deviceName);
+            if (index > -1) {
+                systemSettings.connectedDevices.splice(index, 1);
+                showSystemMessage(`Disconnected from ${deviceName}`, 'warning');
+                
+                // Update UI
+                const deviceElement = event.target.closest('.bluetooth-device');
+                deviceElement.classList.remove('connected');
+                const statusElement = deviceElement.querySelector('p');
+                statusElement.textContent = 'Available';
+                statusElement.classList.remove('text-system-green');
+                statusElement.classList.add('text-text-light');
+                event.target.textContent = 'Pair';
+                event.target.onclick = () => connectBluetoothDevice(deviceName);
+            }
+        }
+
+        function generateQRCode() {
+            const qrContent = document.getElementById('qrContent').value || 
+                             "https://abdusalimsubahielbashi.github.io/quran-app/";
+            
+            // Clear previous QR code
+            document.getElementById('qrcode').innerHTML = '';
+            
+            // Generate new QR code
+            QRCode.toCanvas(document.getElementById('qrcode'), qrContent, {
+                width: 180,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, function(error) {
+                if (error) {
+                    console.error('QR Code generation error:', error);
+                    showSystemMessage('Failed to generate QR code', 'error');
+                } else {
+                    showSystemMessage('QR code generated successfully', 'success');
+                }
+            });
+        }
+
+        function updateQRCode() {
+            generateQRCode();
+        }
+
+        function downloadQRCode() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'quran-app-qr-code.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showSystemMessage('QR code downloaded', 'success');
+            } else {
+                showSystemMessage('Please generate a QR code first', 'error');
+            }
+        }
+
+        function applySystemSettings() {
+            // Save settings to localStorage
+            localStorage.setItem('quranAppSettings', JSON.stringify(systemSettings));
+            
+            // Show success message
+            showSystemMessage('System settings applied successfully', 'success');
+            
+            // Close modal after delay
+            setTimeout(() => {
+                hideSystemSettingsModal();
+            }, 1500);
+        }
+
+        function showSystemMessage(message, type) {
+            const authMessageDiv = document.getElementById('auth-message');
+            authMessageDiv.textContent = message;
+            
+            if (type === 'success') {
+                authMessageDiv.className = 'fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-0 opacity-100 bg-green-100 text-success border border-success';
+            } else if (type === 'error') {
+                authMessageDiv.className = 'fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-0 opacity-100 bg-red-100 text-danger border border-danger';
+            } else if (type === 'warning') {
+                authMessageDiv.className = 'fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-0 opacity-100 bg-yellow-100 text-yellow-800 border border-yellow-300';
+            }
+            
+            setTimeout(() => {
+                authMessageDiv.className = 'fixed top-4 right-4 p-3 rounded-lg shadow-lg z-50 transition-opacity duration-500 transform translate-y-[-20px] opacity-0';
+            }, 3000);
+        }
+
         // Google Search Function
         function performGoogleSearch(event) {
             event.preventDefault();
@@ -1141,12 +2165,16 @@
                 } else {
                      console.warn("Firebase Firestore not loaded/mocked properly.");
                 }
+                if (typeof firebase.storage === 'function') {
+                    firebaseStorage = firebase.storage();
+                }
 
                 console.log("Mock Firebase: Initialized successfully.");
             } else if (typeof firebase !== 'undefined') {
                  firebaseApp = firebase.app();
                  firebaseAuth = firebase.auth();
                  firebaseDB = firebase.firestore();
+                 firebaseStorage = firebase.storage();
             } else {
                  console.error("Firebase SDK not loaded.");
             }
@@ -1947,6 +2975,12 @@
                 handleGoogleIdentity();
             }, 1000);
             
+            // Load saved system settings
+            const savedSettings = localStorage.getItem('quranAppSettings');
+            if (savedSettings) {
+                Object.assign(systemSettings, JSON.parse(savedSettings));
+            }
+            
             // Event Listeners
             surahSelect.addEventListener('change', (event) => {
                 const newSurahNumber = parseInt(event.target.value);
@@ -1983,6 +3017,25 @@
             window.performGoogleSearch = performGoogleSearch;
             window.clearGoogleSearch = clearGoogleSearch;
             window.searchInSidebar = searchInSidebar;
+            window.showSystemSettingsModal = showSystemSettingsModal;
+            window.hideSystemSettingsModal = hideSystemSettingsModal;
+            window.toggleAutoUpdate = toggleAutoUpdate;
+            window.toggleMediaSharing = toggleMediaSharing;
+            window.toggleWiFi = toggleWiFi;
+            window.toggleBluetooth = toggleBluetooth;
+            window.checkForUpdates = checkForUpdates;
+            window.setMediaSharingAccess = setMediaSharingAccess;
+            window.disconnectWiFi = disconnectWiFi;
+            window.connectToWiFi = connectToWiFi;
+            window.connectToHiddenNetwork = connectToHiddenNetwork;
+            window.scanForNetworks = scanForNetworks;
+            window.detectBluetoothDongle = detectBluetoothDongle;
+            window.connectBluetoothDevice = connectBluetoothDevice;
+            window.disconnectBluetoothDevice = disconnectBluetoothDevice;
+            window.generateQRCode = generateQRCode;
+            window.updateQRCode = updateQRCode;
+            window.downloadQRCode = downloadQRCode;
+            window.applySystemSettings = applySystemSettings;
         });
     </script>
 </body>
