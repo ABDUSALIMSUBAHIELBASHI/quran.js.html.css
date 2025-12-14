@@ -384,15 +384,81 @@
         }
     </style>
     
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+   
+    
+
+<!-- Add these new script tags for Firebase v9+ -->
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    sendPasswordResetEmail,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+  import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
+  
+
+
+
+
+  
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyD7Wv0IsF-1ksBkqxzA5EXYOFSKICFz-uc",
+    authDomain: "my-home-page-8a3ea.firebaseapp.com",
+    databaseURL: "https://my-home-page-8a3ea-default-rtdb.firebaseio.com",
+    projectId: "my-home-page-8a3ea",
+    storageBucket: "my-home-page-8a3ea.firebasestorage.app",
+    messagingSenderId: "272298436226",
+    appId: "1:272298436226:web:420ced6b5e05d94404f69b",
+    measurementId: "G-B7W97QGTM2"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  // Make Firebase available globally
+  window.firebase = { app, auth, db, analytics, googleProvider, 
+    createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+    signInWithPopup, sendPasswordResetEmail, onAuthStateChanged,
+    collection, addDoc, serverTimestamp };
+</script>
+
+
+
     <!-- Add Google Identity Services SDK -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body class="bg-secondary text-gray-800 font-inter">
 
     <!-- System Settings Modal -->
@@ -823,7 +889,7 @@
                     
                     <div class="flex items-center space-x-4 p-4 bg-gray-800/50 rounded-lg mb-4">
                         <div class="w-12 h-12 rounded-full bg-gradient-to-br from-system-blue to-system-purple flex items-center justify-center text-white font-bold">
-                            AS
+
                         </div>
                         <div class="flex-1">
                             <h5 class="text-sm font-medium text-white">Abdus Alim</h5>
@@ -1015,11 +1081,10 @@
     <!-- Header Section -->
     <div class="bg-dark-bg text-white border-b border-gray-700 p-3 flex flex-wrap justify-between items-center shadow-md">
         <div class="flex items-center space-x-4 mb-2 sm:mb-0">
-            <img src="1.jpeg" width="60px" height="40px" alt="Logo">
+            <img src="y.jpg" width="40px" height="20px" alt="Logo">
             <a href="https://abdusalimsubahielbashi.github.io/my-Portfolio/" class="text-text-light hover:text-primary text-sm">SKIP TO CONTENT</a>
             <strong class="text-amber-400">APPLICATION QURAN</strong>
         </div>
-        
         <div class="flex items-center space-x-4 flex-wrap sm:flex-nowrap">
             <div class="space-x-4 hidden sm:flex">
                 <a href="https://abdusalimsubahielbashi.github.io/new-html-js/" class="text-text-light hover:text-primary text-sm">ABOUT</a>
@@ -1028,7 +1093,6 @@
                 <a href="https://abdusalimsubahielbashi.github.io/Comment-Code-JS-HTML-CSS/" class="text-text-light hover:text-primary text-sm">FAQ</a>
                 <a href="https://github.com/ABDUSALIMSUBAHIELBASHI?tab=repositories" target="_blank" class="text-yellow-400 font-bold text-sm">APP.QU.N GITHUP Links</a>
             </div>
-
             <!-- Enhanced Auth Section with Modern 2025 Design -->
             <div class="relative">
                 <form id="auth-controls" class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 mt-2 sm:mt-0" onsubmit="handleAuthSubmit(event);">
@@ -1042,7 +1106,6 @@
                                    class="pl-10 pr-4 py-2.5 border border-gray-600 rounded-xl w-full sm:w-40 text-sm bg-gray-800/50 backdrop-blur-sm text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:bg-gray-800/70">
                         </div>
                     </div>
-                    
                     <div class="relative group">
                         <div class="flex items-center">
                             <svg class="absolute left-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1051,7 +1114,6 @@
                             <input type="password" id="passwordInput" placeholder="Password" required 
                                    aria-label="Password" 
                                    class="pl-10 pr-10 py-2.5 border border-gray-600 rounded-xl w-full sm:w-40 text-sm bg-gray-800/50 backdrop-blur-sm text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 hover:bg-gray-800/70">
-                            
                             <!-- Show/Hide Password Icon -->
                             <button type="button" onclick="togglePasswordVisibility()" 
                                     class="absolute right-3 text-gray-400 hover:text-primary transition-colors duration-200"
@@ -1175,7 +1237,7 @@
                                 <span style="color: hsl(0, 0%, 1%)">G</span>
                                 <span style="color: #0a0a0a">o</span>
                                 <span style="color: hsl(60, 9%, 4%)">o</span>
-                                <span style="color: hwb(240 4% 95%) 4% 95%)">g</span>
+                                <span style="color: hwb(240 4% 95%)">g</span>
                                 <span style="color: hwb(135 9% 90%)">l</span>
                                 <span style="color: hsl(0, 3%, 6%)">e</span>
                             </span>
@@ -1340,56 +1402,11 @@
                 
                 <h4 class="text-sm text-gray-700 font-semibold mt-3 pt-2 border-t border-dashed border-gray-300">Websites</h4>
                 <ul class="list-disc pl-5 text-sm space-y-0.5">
-                    <li><a href="https://aniwatchtv.to/" target="_blank" class="hover:text-primary hover:underline">Muslim Web</a></li>
-                    <li><a href="https://corpus.quran.com/" target="_blank" class="hover:text-primary hover:underline">Quranic Corpus</a></li>
-                    <li><a href="https://quran.com/" target="_blank" class="hover:text-primary hover:underline">Quran.com</a></li>
-                    <li><a href="https://www.merriam-webster.com/dictionary/knowledge" target="_blank" class="hover:text-primary hover:underline">iKowledgen</a></li>
-                    <li><a href="https://quran.com/" target="_blank" class="hover:text-primary hover:underline">Online Quran</a></li>
-                    <li><a href="https://www.searchtruth.com/" target="_blank" class="hover:text-primary hover:underline">Search Truth</a></li>
-                    <li><a href="https://github.com/ABDUSALIMSUBAHIELBASHI?tab=repositories" target="_blank" class="hover:text-primary hover:underline">Guided Ways</a></li>
-                    <li><a href="https://quran.al-islam.org/" target="_blank" class="hover:text-primary hover:underline">Multilingual Quran</a></li>
-                    <li><a href="https://quran.com/" target="_blank" class="hover:text-primary hover:underline">Sections of Quran</a></li>
-                    <li><a href="https://www.youtube.com/@KuranReader--Page" target="_blank" class="hover:text-primary hover:underline">Quran Reader</a></li>
-                    <li><a href="https://www.radio.fr/s/radioalbayane" target="_blank" class="hover:text-primary hover:underline">Radio Al-Bayane</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/Quran" target="_blank" class="hover:text-primary hover:underline">Quran Source</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/Religion" target="_blank" class="hover:text-primary hover:underline">Social Religion</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/List_of_Islamic_texts" target="_blank" class="hover:text-primary hover:underline">IslamiTexts</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/List_of_Islamic_texts" target="_blank" class="hover:text-primary hover:underline">Search the Quran</a></li>
-                    <li><a href="https://1oneummah.com/" target="_blank" class="hover:text-primary hover:underline">One Ummah Network</a></li>
-                    <li><a href="http://www.the-quran.org/" target="_blank" class="hover:text-primary hover:underline">Holy Quran Browser</a></li>
-                    <li><a href="https://www.almubin.com/" target="_blank" class="hover:text-primary hover:underline">Almubin</a></li>
-                    <li><a href="https://www.alfanous.org/fr/aya/" target="_blank" class="hover:text-primary hover:underline">Alfanous</a></li>
-                    <li><a href="https://www.youtube.com/channel/UCIBQ7KsbhUa8QA7C5cRKYcw" target="_blank" class="hover:text-primary hover:underline">Dar al-Quran al-Karim</a></li>
-                    <li><a href="https://ksu.edu.sa/en" target="_blank" class="hover:text-primary hover:underline">King Saud University</a></li>
-                    <li><a href="https://ummiandkids.com/wp-content/uploads/2020/08/Quran-Tracker-plain.pdf" target="_blank" class="hover:text-primary hover:underline">Quran Tracker</a></li>
-                    <li><a href="https://fr.wikipedia.org/wiki/Maison_de_la_sagesse" target="_blank" class="hover:text-primary hover:underline">Bayt Al-Hikma</a></li>
-                    <li style="list-style-type: none; margin-left: -20px;" class="text-gray-500">and many others...</li>
-                </ul>
-                
-                <h4 class="text-sm text-gray-700 font-semibold mt-3 pt-2 border-t border-dashed border-gray-300">Applications (Desktop/Software)</h4>
-                <ul class="list-disc pl-5 text-sm space-y-0.5">
-                    <li><a href="https://sourceforge.net/projects/zekr/" target="_blank" class="hover:text-primary hover:underline">Zekr: open-source Quranic app</a></li>
-                    <li><a href="https://helw.net/2007/06/15/quran-facebook-application/" target="_blank" class="hover:text-primary hover:underline">Quran Verses: Facebook application</a></li>
-                    <li><a href="https://apps.microsoft.com/detail/9p1zd3k91xqt" target="_blank" class="hover:text-primary hover:underline">Quran with Tafseer: Windows app</a></li>
-                    <li><a href="https://www.tech-nova.co/index.php/blogs/programs/program-dangi-quran.html" target="_blank" class="hover:text-primary hover:underline">Dangi Quran: Kurdish/Arabic/English software</a></li>
-                    <li><a href="https://corpus.quran.com/java/api/index.html#:~:text=JQuranTree%20is%20a%20set%20of,used%20to%20represent%20character%20data." target="_blank" class="hover:text-primary hover:underline">JQuranTree: Java APIs</a></li>
-                    <li><a href="https://www.softpedia.com/get/Others/Home-Education/QuranCode.shtml" target="_blank" class="hover:text-primary hover:underline">QuranCode: Letter frequency software</a></li>
-                    <li><a href="https://play.google.com/store/apps/details?id=my.smartech.quranmemorizer" target="_blank" class="hover:text-primary hover:underline">Mohaffez: Reciting software</a></li>
-                    <li><a href="https://play.google.com/store/apps/details?id=com.imanimation.quranquest" target="_blank" class="hover:text-primary hover:underline">Quran Quest: Search software</a></li>
-                    <li><a href="https://noor.sourceforge.net/" target="_blank" class="hover:text-primary hover:underline">Noor: Python Quran viewer</a></li>
-                    <li><a href="https://top.gg/bot/975683143401095179" target="_blank" class="hover:text-primary hover:underline">Quran bot: Jabber bot</a></li>
-                    <li><a href="https://www.alfanous.org/" target="_blank" class="hover:text-primary hover:underline">Alfanous: Quranic search engine</a></li>
-                    <li><a href="https://gtaf.org/apps/quran/" target="_blank" class="hover:text-primary hover:underline">Quran Read: Java word-by-word app</a></li>
-                </ul>
-                
-                <h4 class="text-sm text-gray-700 font-semibold mt-3 pt-2 border-t border-dashed border-gray-300">Mobile Apps</h4>
-                <ul class="list-disc pl-5 text-sm space-y-0.5">
-                    <li><a href="https://apps.apple.com/us/app/al-quran-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85/id1669712591" target="_blank" class="hover:text-primary hover:underline">alQuran: iPhone and iPod Touch</a></li>
-                    <li><a href="https://www.kigalidiscount.com/collections/cell-phones-smartphones?srsltid=AfmBOopTWEWbrPdJHaGmwWn1ubVz41yvOc60yskn8etJihElNPeNHn9P" target="_blank" class="hover:text-primary hover:underline">uQuran: general mobile phones</a></li>
-                    <li><a href="https://play.google.com/store/apps/details?id=com.atq.quranemajeedapp.org.mushaf" target="_blank" class="hover:text-primary hover:underline">Qiraat: Android</a></li>
 
 
- <a href="https://quran.com" target="_blank" class="flex items-center p-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+
+
+   <a href="https://quran.com" target="_blank" class="flex items-center p-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
                             <i class="fas fa-globe text-blue-500 mr-2"></i>
                             <span class="text-sm">Quran.com</span>
                         </a>
@@ -1447,8 +1464,65 @@
                         </a>
                         <a href="https://www.islamicfinder.org" target="_blank" class="flex items-center p-2 text-gray-700 hover:bg-blue-50 rounded-lg transition">
                             <i class="fas fa-pray text-teal-500 mr-2"></i>
+                            <span class="text-sm">Islamic Finder</span>
 
 
+
+
+                    <li><a href="https://aniwatchtv.to/" target="_blank" class="hover:text-primary hover:underline">Muslim Web</a></li>
+                    <li><a href="https://corpus.quran.com/" target="_blank" class="hover:text-primary hover:underline">Quranic Corpus</a></li>
+                    <li><a href="https://quran.com/" target="_blank" class="hover:text-primary hover:underline">Quran.com</a></li>
+                    <li><a href="https://www.merriam-webster.com/dictionary/knowledge" target="_blank" class="hover:text-primary hover:underline">iKowledgen</a></li>
+                    <li><a href="https://quran.com/" target="_blank" class="hover:text-primary hover:underline">Online Quran</a></li>
+                    <li><a href="https://www.searchtruth.com/" target="_blank" class="hover:text-primary hover:underline">Search Truth</a></li>
+                    <li><a href="https://github.com/ABDUSALIMSUBAHIELBASHI?tab=repositories" target="_blank" class="hover:text-primary hover:underline">Guided Ways</a></li>
+                    <li><a href="https://quran.al-islam.org/" target="_blank" class="hover:text-primary hover:underline">Multilingual Quran</a></li>
+                    <li><a href="https://quran.com/" target="_blank" class="hover:text-primary hover:underline">Sections of Quran</a></li>
+                    <li><a href="https://www.youtube.com/@KuranReader--Page" target="_blank" class="hover:text-primary hover:underline">Quran Reader</a></li>
+                    <li><a href="https://www.radio.fr/s/radioalbayane" target="_blank" class="hover:text-primary hover:underline">Radio Al-Bayane</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Quran" target="_blank" class="hover:text-primary hover:underline">Quran Source</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/Religion" target="_blank" class="hover:text-primary hover:underline">Social Religion</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/List_of_Islamic_texts" target="_blank" class="hover:text-primary hover:underline">IslamiTexts</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/List_of_Islamic_texts" target="_blank" class="hover:text-primary hover:underline">Search the Quran</a></li>
+                    <li><a href="https://1oneummah.com/" target="_blank" class="hover:text-primary hover:underline">One Ummah Network</a></li>
+                    <li><a href="http://www.the-quran.org/" target="_blank" class="hover:text-primary hover:underline">Holy Quran Browser</a></li>
+                    <li><a href="https://www.almubin.com/" target="_blank" class="hover:text-primary hover:underline">Almubin</a></li>
+                    <li><a href="https://www.alfanous.org/fr/aya/" target="_blank" class="hover:text-primary hover:underline">Alfanous</a></li>
+                    <li><a href="https://www.youtube.com/channel/UCIBQ7KsbhUa8QA7C5cRKYcw" target="_blank" class="hover:text-primary hover:underline">Dar al-Quran al-Karim</a></li>
+                    <li><a href="https://ksu.edu.sa/en" target="_blank" class="hover:text-primary hover:underline">King Saud University</a></li>
+                    <li><a href="https://ummiandkids.com/wp-content/uploads/2020/08/Quran-Tracker-plain.pdf" target="_blank" class="hover:text-primary hover:underline">Quran Tracker</a></li>
+                    <li><a href="https://fr.wikipedia.org/wiki/Maison_de_la_sagesse" target="_blank" class="hover:text-primary hover:underline">Bayt Al-Hikma</a></li>
+                    <li style="list-style-type: none; margin-left: -20px;" class="text-gray-500">and many others...</li>
+                </ul>
+                
+                <h4 class="text-sm text-gray-700 font-semibold mt-3 pt-2 border-t border-dashed border-gray-300">Applications (Desktop/Software)</h4>
+                <ul class="list-disc pl-5 text-sm space-y-0.5">
+                    <li><a href="https://sourceforge.net/projects/zekr/" target="_blank" class="hover:text-primary hover:underline">Zekr: open-source Quranic app</a></li>
+                    <li><a href="https://helw.net/2007/06/15/quran-facebook-application/" target="_blank" class="hover:text-primary hover:underline">Quran Verses: Facebook application</a></li>
+                    <li><a href="https://apps.microsoft.com/detail/9p1zd3k91xqt" target="_blank" class="hover:text-primary hover:underline">Quran with Tafseer: Windows app</a></li>
+                    <li><a href="https://www.tech-nova.co/index.php/blogs/programs/program-dangi-quran.html" target="_blank" class="hover:text-primary hover:underline">Dangi Quran: Kurdish/Arabic/English software</a></li>
+                    <li><a href="https://corpus.quran.com/java/api/index.html#:~:text=JQuranTree%20is%20a%20set%20of,used%20to%20represent%20character%20data." target="_blank" class="hover:text-primary hover:underline">JQuranTree: Java APIs</a></li>
+                    <li><a href="https://www.softpedia.com/get/Others/Home-Education/QuranCode.shtml" target="_blank" class="hover:text-primary hover:underline">QuranCode: Letter frequency software</a></li>
+                    <li><a href="https://play.google.com/store/apps/details?id=my.smartech.quranmemorizer" target="_blank" class="hover:text-primary hover:underline">Mohaffez: Reciting software</a></li>
+                    <li><a href="https://play.google.com/store/apps/details?id=com.imanimation.quranquest" target="_blank" class="hover:text-primary hover:underline">Quran Quest: Search software</a></li>
+                    <li><a href="https://noor.sourceforge.net/" target="_blank" class="hover:text-primary hover:underline">Noor: Python Quran viewer</a></li>
+                    <li><a href="https://top.gg/bot/975683143401095179" target="_blank" class="hover:text-primary hover:underline">Quran bot: Jabber bot</a></li>
+                    <li><a href="https://www.alfanous.org/" target="_blank" class="hover:text-primary hover:underline">Alfanous: Quranic search engine</a></li>
+                    <li><a href="https://gtaf.org/apps/quran/" target="_blank" class="hover:text-primary hover:underline">Quran Read: Java word-by-word app</a></li>
+
+
+
+
+
+                    
+
+                </ul>
+                
+                <h4 class="text-sm text-gray-700 font-semibold mt-3 pt-2 border-t border-dashed border-gray-300">Mobile Apps</h4>
+                <ul class="list-disc pl-5 text-sm space-y-0.5">
+                    <li><a href="https://apps.apple.com/us/app/al-quran-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85/id1669712591" target="_blank" class="hover:text-primary hover:underline">alQuran: iPhone and iPod Touch</a></li>
+                    <li><a href="https://www.kigalidiscount.com/collections/cell-phones-smartphones?srsltid=AfmBOopTWEWbrPdJHaGmwWn1ubVz41yvOc60yskn8etJihElNPeNHn9P" target="_blank" class="hover:text-primary hover:underline">uQuran: general mobile phones</a></li>
+                    <li><a href="https://play.google.com/store/apps/details?id=com.atq.quranemajeedapp.org.mushaf" target="_blank" class="hover:text-primary hover:underline">Qiraat: Android</a></li>
                 </ul>
             </div>
             
@@ -1514,16 +1588,8 @@
     </div>
 
     <script>
-        // Firebase Configuration (Mock)
-        const firebaseConfig = {
-            apiKey: "AIzaSyD-mock-api-key-123",
-            authDomain: "quran-app-mock.firebaseapp.com",
-            projectId: "quran-app-mock",
-            storageBucket: "quran-app-mock.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:mockwebhash"
-        };
-        
+
+
         let firebaseApp = null;
         let firebaseAuth = null;
         let firebaseDB = null;
@@ -1690,6 +1756,13 @@
             { "surahName": "Al-Falaq", "surahNameArabic": "الفلق", "surahNameTranslation": "The Daybreak", "totalAyah": 5 },
             { "surahName": "An-Naas", "surahNameArabic": "الناس", "surahNameTranslation": "Mankind", "totalAyah": 6 }
         ];
+        
+
+
+
+
+
+
         
         // Mock Aya Data
         const mockAyaData = {
