@@ -505,6 +505,69 @@
                         </label>
                     </div>
                     
+
+
+
+
+
+
+
+<div class="container mx-auto p-6 mt-10">
+    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+        <h2 class="text-2xl font-bold mb-4 text-primary">Registered Users (Database View)</h2>
+        <button onclick="fetchUsers()" class="mb-4 bg-system-blue text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            🔄 Refresh List
+        </button>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Full Name</th>
+                        <th class="py-3 px-6 text-left">Email Address</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody" class="text-gray-600 text-sm font-light">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function fetchUsers() {
+        try {
+            const response = await fetch('http://localhost:3000/all-users');
+            const users = await response.json();
+            const tableBody = document.getElementById('userTableBody');
+            
+            tableBody.innerHTML = ''; // Clear old data
+            
+            users.forEach(user => {
+                const row = `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-6 text-left whitespace-nowrap font-medium">${user.fullName || user.username}</td>
+                        <td class="py-3 px-6 text-left">${user.email}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } catch (err) {
+            console.error("Error fetching users:", err);
+        }
+    }
+    // Load users when page opens
+    window.onload = fetchUsers;
+</script>
+
+
+
+
+
+
+
+
+
+
                     <div id="updateStatus" class="mt-3">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm text-white">Current Version: 2.5.1</span>
